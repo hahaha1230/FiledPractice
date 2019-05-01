@@ -1,8 +1,13 @@
 package com.example.fieldpractice.ui.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -12,29 +17,42 @@ import android.widget.LinearLayout;
 import com.example.fieldpractice.R;
 import com.example.fieldpractice.base.BaseActivity;
 import com.example.fieldpractice.contract.MainContract;
+import com.example.fieldpractice.model.db.UsersInfo;
 import com.example.fieldpractice.presenter.MainPresenter;
 import com.example.fieldpractice.ui.fragment.MapFragment;
 import com.example.fieldpractice.ui.fragment.MeFragment;
 import com.example.fieldpractice.ui.fragment.MessageFragment;
 import com.example.fieldpractice.ui.fragment.TaskFragment;
+import com.google.gson.Gson;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Request.Builder;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
+
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, View.OnClickListener {
-
-
-
     @BindView(R.id.home_frame_layout)
     FrameLayout home_frame_layout;
-
     //tab
     @BindView(R.id.id_tab_me)
     LinearLayout tab_me;
@@ -44,7 +62,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     LinearLayout tab_task;
     @BindView(R.id.id_tab_map)
     LinearLayout tab_map;
-
     //image button
     @BindView(R.id.id_tab_me_image)
     ImageButton tab_me_image;
@@ -56,12 +73,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     ImageButton tab_task_image;
 
 
-
     private Unbinder unbinder;
     private Fragment taskFragment;
     private Fragment mapFragment;
     private Fragment messageFragment;
     private Fragment meFragment;
+    private static final String TAG="hhh";
 
 
     @Override
@@ -79,47 +96,160 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         unbinder = ButterKnife.bind(this);
 
         initEvent();
-
         setSelect(0);
 
-       /* new Thread(){
-            public  void run(){
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");//动态加载类
-                    String url = "jdbc:mysql://localhost:3306/internship?autoReconnect=true";
-                    //上面语句中 mysql://mysql.lianfangti.top为你的mysql服务器地址 3306为端口号   public是你的数据库名 根据你的实际情况更改
-                    Connection conn = DriverManager.getConnection(url, "root", "123456");//使用 DriverManger.getConnection链接数据库  第一个参数为连接地址 第二个参数为用户名 第三个参数为连接密码  返回一个Connection对象
-                    if(conn!=null){ //判断 如果返回不为空则说明链接成功 如果为null的话则连接失败 请检查你的 mysql服务器地址是否可用 以及数据库名是否正确 并且 用户名跟密码是否正确
-                        Log.d("hhh","连接成功");
-                        Statement stmt = conn.createStatement(); //根据返回的Connection对象创建 Statement对象
-                        String sql = "select * from internship"; //要执行的sql语句
-                        ResultSet rs = stmt.executeQuery(sql); //使用executeQury方法执行sql语句 返回ResultSet对象 即查询的结果
-                    }else{
-                        Log.d("hhh","连接失败");
-                    }
-                } catch (ClassNotFoundException e) {
-                    Log.d("hhh","连接失败2"+e.getMessage());
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    Log.d("hhh","连接失败3"+e.getMessage());
-                    e.printStackTrace();
-                }
+        getData();
+
+       // ceshi();
+    }
+
+
+
+    private void getData()
+    {
+        Observable.create(new ObservableOnSubscribe<Response>() {
+            @Override
+            public void subscribe(ObservableEmitter<Response> e) throws Exception {
+                Builder builder=new Builder()
+                        .url("192.168.1.12:3001/Ischecklogin")
+                        .get();
+                Request request=builder.build();
+                Call call=new OkHttpClient().newCall(request);
+                Response response=call.execute();
+                e.onNext(response);
             }
-        }.start();
+        }).map(new Function<Response, UsersInfo>() {
+            @Override
+            public UsersInfo apply(Response response) throws Exception {
+                if (response.isSuccessful())
+                {
+                   ResponseBody body=response.body();
+                   if (body!=null)
+                   {
+                       Log.d(TAG,"转换前："+response.body());
+                       return new Gson().fromJson(body.string(), UsersInfo.class);
+
+                   }
+
+                }
+                return null;
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<UsersInfo>() {
+                    @Override
+                    public void accept(UsersInfo usersInfo) throws Exception {
+                       Log.d(TAG, "doOnNext 线程:" + Thread.currentThread().getName() + "\n");
+                        //mRxOperatorsText.append("\ndoOnNext 线程:" + Thread.currentThread().getName() + "\n");
+                        //Log.e(TAG, "doOnNext: 保存成功：" +us.toString() + "\n");
+                       // mRxOperatorsText.append("doOnNext: 保存成功：" + s.toString() + "\n");
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<UsersInfo>() {
+                    @Override
+                    public void accept(UsersInfo usersInfo) throws Exception {
+                        Log.d(TAG, "subscribe 线程:" + Thread.currentThread().getName() + "\n");
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        Log.e(TAG, "subscribe 线程:" + Thread.currentThread().getName() + "\n");
+                        Log.e(TAG, "失败：" + throwable.getMessage() + "\n");
+                    }
+                });
+
+    }
+
+    private void ceshi() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                Log.d(TAG,"observable emit 1"+"\n");
+                e.onNext(1);
+                Log.d(TAG,"observable emit 2"+"\n");
+                e.onNext(2);
+                Log.d(TAG,"observable emit 3"+"\n");
+                e.onNext(3);
+                Log.d(TAG,"observable emit 4"+"\n");
+                e.onNext(4);
+                Log.d(TAG,"observable emit 5"+"\n");
+                e.onNext(5);
+                Log.d(TAG,"observable emit 6"+"\n");
+                e.onNext(6);
+            }
+        }).subscribe(new Observer<Integer>() {
+            private int i;
+            private Disposable mDisposable;
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d(TAG,"onSubscribe : " + d.isDisposed() + "\n");
+                mDisposable = d;
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.d(TAG,"onNext : value : " + integer + "\n");
+                i++;
+                if (i == 2) {
+                    // 在RxJava 2.x 中，新增的Disposable可以做到切断的操作，让Observer观察者不再接收上游事件
+                    mDisposable.dispose();
+                    Log.d(TAG,"onNext : isDisposable : " + mDisposable.isDisposed() + "\n");
+                    Log.d(TAG, "onNext : isDisposable : " + mDisposable.isDisposed() + "\n");
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG,"onError : value : " + e.getMessage() + "\n");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG,"onComplete" + "\n");
+
+            }
+        });
+    }
+
+    private void requestData() {
+
+        //trim = et_search.getText().toString().trim();
+        //String path = "http://93.gov.cn/93app/get_search.do?key=" + trim;
+        //String path = "http://93.gov.cn/93app/get_search.do?key="
+        String path = "192.168.1.12:3001/Ischecklogin";
+
+        MyAsyncTask task = new MyAsyncTask();
+        task.execute(path);
+
+      /*  String result = null;
+        HttpClient client = HttpClients.createDefault();
+        URIBuilder builder = new URIBuilder();
+        URI uri = null;
+        try {
+            uri = builder.setScheme("http")
+                    .setHost("xxx.xxx.xxx.xxx:xxxx")
+                    .setPath("/api/authorize/login")
+                    .build();
+
+            HttpPost post = new HttpPost(uri);
+            //设置请求头
+            post.setHeader("Content-Type", "application/json");
+            String body = "{\"Key\": \"\",\"Secret\": \"\"}";
+            //设置请求体
+            post.setEntity(new StringEntity(body));
+            //获取返回信息
+            HttpResponse response = client.execute(post);
+            result = response.toString();
+        } catch (Exception e) {
+            System.out.println("接口请求失败"+e.getStackTrace());
+        }
+        System.out.println(result);
 */
 
-
-
-      /*  try {
-
-           DBService dbService=new DBService();
-           dbService.updateUserData("5555555555");
-        }
-        catch (Exception e)
-        {
-            Log.d("hhh","出错了"+e.getMessage());
-        }*/
     }
+
 
     /**
      * 初始化界面的事件
@@ -158,8 +288,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 tab_test_image.setImageResource(R.mipmap.map_checked);
                 if (mapFragment==null)
                 {
-
-                    mapFragment=MapFragment.newInstance();
+                    mapFragment=new MapFragment();
                     transaction.add(R.id.home_frame_layout,mapFragment);
                 }
                 else {
@@ -250,14 +379,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         tab_me_image.setImageResource(R.mipmap.me);
     }
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.homelayout;
     }
+
+
 
     @Override
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
     }
+
 }
