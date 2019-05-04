@@ -1,13 +1,8 @@
-package com.example.fieldpractice.ui.activity;
+package com.example.fieldpractice.home;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,13 +11,12 @@ import android.widget.LinearLayout;
 
 import com.example.fieldpractice.R;
 import com.example.fieldpractice.base.BaseActivity;
-import com.example.fieldpractice.contract.MainContract;
-import com.example.fieldpractice.model.db.UsersInfo;
-import com.example.fieldpractice.presenter.MainPresenter;
-import com.example.fieldpractice.ui.fragment.MapFragment;
-import com.example.fieldpractice.ui.fragment.MeFragment;
-import com.example.fieldpractice.ui.fragment.MessageFragment;
-import com.example.fieldpractice.ui.fragment.TaskFragment;
+import com.example.fieldpractice.javabean.UsersInfoTb;
+import com.example.fieldpractice.ui.activity.MyAsyncTask;
+import com.example.fieldpractice.home.fragment.MapFragment;
+import com.example.fieldpractice.home.fragment.MeFragment;
+import com.example.fieldpractice.home.fragment.MessageFragment;
+import com.example.fieldpractice.home.fragment.TaskFragment;
 import com.google.gson.Gson;
 
 
@@ -50,7 +44,8 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, View.OnClickListener {
+public class HomeActivity extends BaseActivity<HomePresenter,IHome.V>  {
+
     @BindView(R.id.home_frame_layout)
     FrameLayout home_frame_layout;
     //tab
@@ -82,28 +77,71 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
     @Override
-    public void testGetMview() {
-        Log.d("print", "我是V层的引用");
+    public HomePresenter getPresenterInstance() {
+        return new HomePresenter();
     }
 
     @Override
-    protected void initPresenter() {
-        mPresenter = new MainPresenter();
-    }
-
-    @Override
-    protected void initView() {
-        unbinder = ButterKnife.bind(this);
-
-        initEvent();
-        setSelect(0);
-
+    public void initData() {
         getData();
+    }
 
-       // ceshi();
+    @Override
+    public void initListener() {
+        tab_task.setOnClickListener(this);
+        tab_map.setOnClickListener(this);
+        tab_message.setOnClickListener(this);
+        tab_me.setOnClickListener(this);
+    }
+
+    @Override
+    public <ERROR> void responseError(ERROR error, Throwable throwable) {
+        Log.d("hhh",getClass().getSimpleName()+"异常:"+error);
     }
 
 
+
+
+    @Override
+    public void initView() {
+        unbinder = ButterKnife.bind(this);
+        setSelect(0);
+    }
+
+
+    @Override
+    public IHome.V getContract() {
+        return new IHome.V() {
+            @Override
+            public void requestUserInfo(String userID) {
+                mPresenter.getContract().requestUserInfo(userID);
+            }
+        };
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.id_tab_task:
+                resetImg();
+                setSelect(0);
+                break;
+            case R.id.id_tab_map:
+                resetImg();
+                setSelect(1);
+                break;
+            case R.id.id_tab_message:
+                resetImg();
+                setSelect(2);
+                break;
+            case R.id.id_tab_me:
+                resetImg();
+                setSelect(3);
+                break;
+        }
+    }
 
     private void getData()
     {
@@ -118,16 +156,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 Response response=call.execute();
                 e.onNext(response);
             }
-        }).map(new Function<Response, UsersInfo>() {
+        }).map(new Function<Response, UsersInfoTb>() {
             @Override
-            public UsersInfo apply(Response response) throws Exception {
+            public UsersInfoTb apply(Response response) throws Exception {
                 if (response.isSuccessful())
                 {
                    ResponseBody body=response.body();
                    if (body!=null)
                    {
                        Log.d(TAG,"转换前："+response.body());
-                       return new Gson().fromJson(body.string(), UsersInfo.class);
+                       return new Gson().fromJson(body.string(), UsersInfoTb.class);
 
                    }
 
@@ -135,9 +173,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 return null;
             }
         }).observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<UsersInfo>() {
+                .doOnNext(new Consumer<UsersInfoTb>() {
                     @Override
-                    public void accept(UsersInfo usersInfo) throws Exception {
+                    public void accept(UsersInfoTb usersInfo) throws Exception {
                        Log.d(TAG, "doOnNext 线程:" + Thread.currentThread().getName() + "\n");
                         //mRxOperatorsText.append("\ndoOnNext 线程:" + Thread.currentThread().getName() + "\n");
                         //Log.e(TAG, "doOnNext: 保存成功：" +us.toString() + "\n");
@@ -145,9 +183,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<UsersInfo>() {
+                .subscribe(new Consumer<UsersInfoTb>() {
                     @Override
-                    public void accept(UsersInfo usersInfo) throws Exception {
+                    public void accept(UsersInfoTb usersInfo) throws Exception {
                         Log.d(TAG, "subscribe 线程:" + Thread.currentThread().getName() + "\n");
                     }
                 }, new Consumer<Throwable>() {
@@ -251,15 +289,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
 
-    /**
-     * 初始化界面的事件
-     */
-    private void initEvent() {
-        tab_task.setOnClickListener(this);
-        tab_map.setOnClickListener(this);
-        tab_message.setOnClickListener(this);
-        tab_me.setOnClickListener(this);
-    }
 
 
     /**
@@ -323,27 +352,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.id_tab_task:
-                resetImg();
-                setSelect(0);
-                break;
-            case R.id.id_tab_map:
-                resetImg();
-                setSelect(1);
-                break;
-            case R.id.id_tab_message:
-                resetImg();
-                setSelect(2);
-                break;
-            case R.id.id_tab_me:
-                resetImg();
-                setSelect(3);
-                break;
-        }
-    }
+
 
     /**
      * 隐藏所有fragment
@@ -385,12 +394,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         return R.layout.homelayout;
     }
 
-
-
     @Override
-    protected void onDestroy() {
+    public void destroy() {
         unbinder.unbind();
         super.onDestroy();
     }
+
 
 }

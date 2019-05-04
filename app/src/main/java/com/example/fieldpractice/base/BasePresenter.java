@@ -1,32 +1,38 @@
 package com.example.fieldpractice.base;
 
-import com.example.fieldpractice.model.db.APPDbHelper;
-import com.example.fieldpractice.model.db.DataManager;
-import com.example.fieldpractice.model.db.DbHelper;
-import com.example.fieldpractice.model.http.ApiHelper;
-import com.example.fieldpractice.model.http.AppApiHelper;
-import com.example.fieldpractice.model.pregerence.AppPreferenceHelper;
-import com.example.fieldpractice.model.pregerence.PreferenceHelper;
+
+
+import io.reactivex.annotations.Nullable;
 
 /**
  * Created by JG on 2019/4/19.
  */
 
-public abstract class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
+public abstract class BasePresenter<V extends BaseActivity,M extends BaseModel,CONTRACT> extends SuperBase<CONTRACT> {
 
-    protected DataManager mDataManager;
-    protected V mView;
+   public V mView;
 
-    public BasePresenter(){
-        APPDbHelper appDbHelper=new DbHelper();
-        AppPreferenceHelper appPreferenceHelper=new PreferenceHelper();
-        AppApiHelper appApiHelper=new ApiHelper();
-        mDataManager=new DataManager(appDbHelper,appApiHelper,appPreferenceHelper);
 
+   public M mModel;
+
+   public BasePresenter()
+   {
+       this.mModel=getModelInstance();
+   }
+   //将view和presenter建立关系
+    public void bindView(V mView)
+    {
+        this.mView=mView;
     }
 
-    @Override
-    public void attachView(V view) {
-        this.mView=view;
+    //activity销毁时候要进行解绑，否则会内存溢出
+    public void unBindView()
+    {
+        this.mView= null;
     }
+
+
+    //让子类实例化model层
+    public abstract M getModelInstance();
+
 }

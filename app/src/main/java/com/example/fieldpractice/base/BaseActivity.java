@@ -3,45 +3,81 @@ package com.example.fieldpractice.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 
 /**
  * Created by JG on 2019/4/19.
  */
 
-public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity implements IBaseView {
+public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends  AppCompatActivity
+        implements View.OnClickListener {
 
     protected P mPresenter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
-        //初始化mPresenter
-        initPresenter();
-        if(mPresenter != null){
-            mPresenter.attachView(this);
-        }
-
         //初始化
         initView();
+        initData();
+        initListener();
+
+        //初始化presenter
+        mPresenter=getPresenterInstance();
+        mPresenter.bindView(this);
     }
 
     /**
-     * 初始化mPresenter
+     * 接口的契约
+     * @return
      */
-    protected abstract void initPresenter();
+    public abstract CONTRACT getContract();
+
 
     /**
-     * 初始化
+     * 让子类初始化Presenter
      */
-    protected abstract void initView();
+    public abstract P getPresenterInstance();
+
+    /**
+     * 初始化界面
+     */
+    public abstract void initView();
+
+
+    /**
+     * 初始化数据
+     */
+    public abstract void initData();
 
     /**
      * 获取布局id
      * @return
      */
     protected abstract int getLayoutId();
+
+
+    /**
+     * 初始化监听
+     */
+    public abstract void initListener();
+
+
+
+    /**
+     * 处理响应实物异常
+     */
+    public abstract <ERROR extends Object> void responseError(ERROR error,Throwable throwable);
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        destroy();
+    }
+
+    public abstract void destroy();
 }

@@ -1,10 +1,10 @@
-package com.example.fieldpractice.model.db;
+package com.example.fieldpractice.javabean;
 
 /**
  * Created by JG on 2019/5/1.
  */
 
-public class UsersInfo {
+public class UsersInfoTb {
     private String userName;
     private String userIcon;
     private int userId;
@@ -55,7 +55,7 @@ public class UsersInfo {
 
     @Override
     public String toString() {
-        return "UsersInfo{" +
+        return "UsersInfoTb{" +
                 "userName=" + userName +
                 ", userIcon='" + userIcon  +
                 ", userId=" + userId +

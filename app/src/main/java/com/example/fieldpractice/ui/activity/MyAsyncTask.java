@@ -26,8 +26,7 @@ public class MyAsyncTask extends AsyncTask {
         try {
             //URL url = new URL(objects[0].toString());
             URL url = new URL("http://192.168.1.12:3001/Ischecklogin");
-            HttpURLConnection openConnection = (HttpURLConnection) url
-                    .openConnection();
+            HttpURLConnection openConnection = (HttpURLConnection) url.openConnection();
             openConnection.setRequestMethod("POST");
             openConnection.setDoInput(true);//发送POST请求必须设置允许输出
             openConnection.setDoOutput(true);//发送POST请求必须设置允许输入

@@ -1,15 +1,11 @@
-package com.example.fieldpractice.ui.fragment;
+package com.example.fieldpractice.home.fragment;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +28,6 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.example.fieldpractice.R;
-import com.example.fieldpractice.ui.activity.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
