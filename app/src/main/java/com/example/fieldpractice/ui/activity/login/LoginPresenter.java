@@ -1,4 +1,4 @@
-package com.example.fieldpractice.login;
+package com.example.fieldpractice.ui.activity.login;
 
 import com.example.fieldpractice.base.BasePresenter;
 

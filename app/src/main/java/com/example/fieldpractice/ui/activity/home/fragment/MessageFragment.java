@@ -1,8 +1,7 @@
-package com.example.fieldpractice.home.fragment;
+package com.example.fieldpractice.ui.activity.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,10 @@ public class MessageFragment extends BaseFragment{
         return inflater.inflate(R.layout.tab_message_layout,container,false);
     }
 
-
+    @Override
+    protected int getLayoutId() {
+        return R.layout.tab_message_layout;
+    }
 
     @Override
     public void initView() {
@@ -36,6 +38,17 @@ public class MessageFragment extends BaseFragment{
 
     @Override
     public void initRecyclerView() {
+
+    }
+
+
+    @Override
+    public void initListener() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fieldpractice.login;
+package com.example.fieldpractice.ui.activity.login;
 
 import android.view.View;
 import android.widget.Button;

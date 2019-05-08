@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
    <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:id="@+id/task_recyclerView">
+       android:id="@+id/task_recyclerView"
+       app:layout_behavior="@string/appbar_scrolling_view_behavior">
    </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+
+
+   <android.support.design.widget.FloatingActionButton
+       android:id="@+id/add_floating_action_button"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="bottom|right"
+       android:layout_margin="10dp"
+       android:src="@mipmap/add"
+       app:backgroundTintMode="src_in"
+       app:borderWidth="0dp"
+       app:elevation="5dp"
+       app:fabSize="auto"
+       app:pressedTranslationZ="0dp"
+       app:rippleColor="@color/colorGrey"
+       app:useCompatPadding="true"
+       app:layout_anchor="@+id/task_recyclerView"
+       app:layout_anchorGravity="bottom|right|end"
+       />
+
+   <!--  app:layout_behavior="com.example.fieldpractice.utils.ScrollingViewBehavior"  !-->
+</android.support.design.widget.CoordinatorLayout>

@@ -25,4 +25,5 @@
         android:background="@mipmap/search"
         android:layout_marginRight="10dp"/>
 
+
 </android.support.v7.widget.Toolbar>

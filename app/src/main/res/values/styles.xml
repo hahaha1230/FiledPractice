@@ -17,9 +17,24 @@
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="text_16" >
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
     <style name="text_18" >
         <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/colorText</item>
+    </style>
+
+
+    <style name="edit_text_16" >
+        <item name="android:textSize">16dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:padding">7dp</item>
+        <item name="android:gravity">top</item>
+        <item name="android:background">@drawable/dark_circular_view</item>
+         <item name="android:textColor">@color/colorText</item>
     </style>
 
 

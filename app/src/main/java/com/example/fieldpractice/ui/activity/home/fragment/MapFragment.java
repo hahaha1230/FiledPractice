@@ -1,4 +1,4 @@
-package com.example.fieldpractice.home.fragment;
+package com.example.fieldpractice.ui.activity.home.fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

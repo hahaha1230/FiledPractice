@@ -19,6 +19,7 @@ public abstract class BasePresenter<V extends BaseActivity,M extends BaseModel,C
    {
        this.mModel=getModelInstance();
    }
+
    //将view和presenter建立关系
     public void bindView(V mView)
     {

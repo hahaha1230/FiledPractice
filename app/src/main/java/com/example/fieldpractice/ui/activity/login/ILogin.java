@@ -1,4 +1,4 @@
-package com.example.fieldpractice.login;
+package com.example.fieldpractice.ui.activity.login;
 
 /**
  * Created by JG on 2019/5/3.

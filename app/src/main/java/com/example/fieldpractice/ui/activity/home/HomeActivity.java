@@ -1,4 +1,4 @@
-package com.example.fieldpractice.home;
+package com.example.fieldpractice.ui.activity.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,11 +12,10 @@ import android.widget.LinearLayout;
 import com.example.fieldpractice.R;
 import com.example.fieldpractice.base.BaseActivity;
 import com.example.fieldpractice.javabean.UsersInfoTb;
-import com.example.fieldpractice.ui.activity.MyAsyncTask;
-import com.example.fieldpractice.home.fragment.MapFragment;
-import com.example.fieldpractice.home.fragment.MeFragment;
-import com.example.fieldpractice.home.fragment.MessageFragment;
-import com.example.fieldpractice.home.fragment.TaskFragment;
+import com.example.fieldpractice.ui.activity.home.fragment.MapFragment;
+import com.example.fieldpractice.ui.activity.home.fragment.MeFragment;
+import com.example.fieldpractice.ui.activity.home.fragment.MessageFragment;
+import com.example.fieldpractice.ui.activity.home.fragment.TaskFragment;
 import com.google.gson.Gson;
 
 
@@ -251,42 +250,6 @@ public class HomeActivity extends BaseActivity<HomePresenter,IHome.V>  {
         });
     }
 
-    private void requestData() {
-
-        //trim = et_search.getText().toString().trim();
-        //String path = "http://93.gov.cn/93app/get_search.do?key=" + trim;
-        //String path = "http://93.gov.cn/93app/get_search.do?key="
-        String path = "192.168.1.12:3001/Ischecklogin";
-
-        MyAsyncTask task = new MyAsyncTask();
-        task.execute(path);
-
-      /*  String result = null;
-        HttpClient client = HttpClients.createDefault();
-        URIBuilder builder = new URIBuilder();
-        URI uri = null;
-        try {
-            uri = builder.setScheme("http")
-                    .setHost("xxx.xxx.xxx.xxx:xxxx")
-                    .setPath("/api/authorize/login")
-                    .build();
-
-            HttpPost post = new HttpPost(uri);
-            //设置请求头
-            post.setHeader("Content-Type", "application/json");
-            String body = "{\"Key\": \"\",\"Secret\": \"\"}";
-            //设置请求体
-            post.setEntity(new StringEntity(body));
-            //获取返回信息
-            HttpResponse response = client.execute(post);
-            result = response.toString();
-        } catch (Exception e) {
-            System.out.println("接口请求失败"+e.getStackTrace());
-        }
-        System.out.println(result);
-*/
-
-    }
 
 
 

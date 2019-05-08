@@ -1,6 +1,5 @@
-package com.example.fieldpractice.home;
+package com.example.fieldpractice.ui.activity.home;
 
-import com.example.fieldpractice.base.BaseModel;
 import com.example.fieldpractice.base.BasePresenter;
 
 /**

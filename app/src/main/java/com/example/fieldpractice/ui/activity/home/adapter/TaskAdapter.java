@@ -1,4 +1,4 @@
-package com.example.fieldpractice.home.fragment;
+package com.example.fieldpractice.ui.activity.home.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.fieldpractice.R;
 import com.example.fieldpractice.javabean.TaskTb;
+
 
 import java.util.ArrayList;
 
@@ -94,7 +95,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
          */
         void OnItemClick(View view, TaskTb taskTb);
     }
-
 
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

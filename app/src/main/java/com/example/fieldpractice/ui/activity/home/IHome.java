@@ -1,4 +1,4 @@
-package com.example.fieldpractice.home;
+package com.example.fieldpractice.ui.activity.home;
 
 /**
  * Created by JG on 2019/5/4.
