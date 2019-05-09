@@ -29,10 +29,6 @@ import butterknife.ButterKnife;
 
 public class TaskFragment extends BaseFragment{
 
-
-   // private View view;//定义view用来设置fragment的layout
-
-
     private TaskAdapter taskAdapter;
     private ArrayList<TaskTb> tasksList = new ArrayList<TaskTb>();
 
@@ -45,28 +41,7 @@ public class TaskFragment extends BaseFragment{
 
 
     @Override
-    protected int getLayoutId() {
-        Log.d("hhh","get layout id");
-        return R.layout.tab_task_layout;
-    }
-
-
-
-    /*
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.tab_task_layout,container,false);
-
-        ButterKnife.bind(this,view);
-        initRecyclerView();
-        initData();
-        return view;
-    }*/
-
-    @Override
     public void initRecyclerView() {
-       // taskRecyclerView=(RecyclerView)view.findViewById(R.id.task_recyclerView);
         taskAdapter=new TaskAdapter(getActivity(),tasksList);
         taskRecyclerView.setAdapter(taskAdapter);
 
@@ -80,25 +55,16 @@ public class TaskFragment extends BaseFragment{
             }
         });
 
-       /* fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("hhh","点击事件111");
-            }
-        });*/
     }
 
 
     @Override
     public void initView() {
         Log.d("hhh","initview");
-       // taskRecyclerView=(RecyclerView)view.findViewById(R.id.task_recyclerView);
-
     }
 
     @Override
     public void initData() {
-        Log.d("hhh","initdata");
         for (int i=0;i<10;i++){
             TaskTb taskTb=new TaskTb();
             taskTb.setInitiator(i*8);
@@ -118,11 +84,16 @@ public class TaskFragment extends BaseFragment{
         switch (v.getId())
         {
             case R.id.add_floating_action_button:
-                Log.d("hhh","点击事件");
                Intent intent=new Intent(getContext(), NewTaskActivity.class);
                 startActivity(intent);
                 break;
         }
-
     }
+
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.tab_task_layout;
+    }
+
 }

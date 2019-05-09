@@ -1,21 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#7adfb8"
+    android:orientation="vertical"
+    tools:context=".ui.activity.login.LoginActivity">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_name"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_pwd"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="登录"
-        android:id="@+id/bt_login"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="55dip"
+            android:layout_height="55dip"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/project_detail_cir" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:gravity="center"
+            android:text="野外实习平台"
+            android:textColor="#ffffff"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="超越自我"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <include
+            android:id="@+id/input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="130dip"
+            layout="@layout/input_layout" />
+
+        <include
+            android:id="@+id/layout_progress"
+            android:layout_width="match_parent"
+            android:layout_height="130dip"
+            layout="@layout/layout_progress"
+            android:visibility="gone" />
+
+
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_layout"
+            android:layout_marginTop="15dip"
+            android:background="@drawable/text_bg"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:paddingLeft="15dip"
+            android:layout_marginRight="30dp"
+            android:paddingBottom="2dip"
+            android:layout_toLeftOf="@+id/view"
+            android:paddingRight="15dip"
+            android:paddingTop="2dip"
+            android:text="登录"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+       <view
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/view"
+           android:layout_below="@+id/input_layout"
+           android:visibility="invisible"
+           android:layout_centerInParent="true"/>
+
+
+        <TextView
+            android:id="@+id/tv_login_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_layout"
+            android:layout_marginTop="15dip"
+           android:layout_marginLeft="30dp"
+            android:background="@drawable/text_bg"
+            android:layout_toRightOf="@+id/view"
+            android:gravity="center"
+            android:paddingBottom="2dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="2dip"
+            android:text="取消"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

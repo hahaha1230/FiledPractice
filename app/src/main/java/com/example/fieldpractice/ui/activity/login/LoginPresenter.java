@@ -1,5 +1,7 @@
 package com.example.fieldpractice.ui.activity.login;
 
+import android.util.Log;
+
 import com.example.fieldpractice.base.BasePresenter;
 
 /**
@@ -25,7 +27,8 @@ public class LoginPresenter extends BasePresenter<LoginActivity,LoginModel,ILogi
                     mModel.getContract().requestLogin(name,pwd);
                    // mModel.requestLogin(name,pwd);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d("hhh","login presenter"+e);
+                    //e.printStackTrace();
                     //异常处理
                 }
             }

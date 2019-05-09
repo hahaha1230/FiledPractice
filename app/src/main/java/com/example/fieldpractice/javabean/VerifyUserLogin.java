@@ -5,23 +5,49 @@ package com.example.fieldpractice.javabean;
  */
 
 public class VerifyUserLogin {
-    private boolean loginState;
+    private String err;
 
-    private UsersInfoTb usersInfoTb;
+    private String username;
 
-    public boolean isLoginState() {
-        return loginState;
+    private String password;
+
+    public  VerifyUserLogin(String err,String name,String pwd)
+    {
+        this.err=err;
+        this.username=name;
+        this.password=pwd;
     }
 
-    public void setLoginState(boolean loginState) {
-        this.loginState = loginState;
+    public String getErr() {
+        return err;
     }
 
-    public UsersInfoTb getUsersInfoTb() {
-        return usersInfoTb;
+    public void setErr(String err) {
+        this.err = err;
     }
 
-    public void setUsersInfoTb(UsersInfoTb usersInfoTb) {
-        this.usersInfoTb = usersInfoTb;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "{"+
+                "message{ username="+username+
+                ",password="+password+
+                "},"+"err="+err+
+                "}";
     }
 }

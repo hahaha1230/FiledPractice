@@ -1,7 +1,7 @@
-package com.example.fieldpractice.api;
+package com.example.fieldpractice.http;
 
+import com.example.fieldpractice.base.BaseBean;
 import com.example.fieldpractice.javabean.UsersInfoTb;
-import com.example.fieldpractice.javabean.VerifyUserLogin;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -15,9 +15,9 @@ import retrofit2.http.POST;
 public interface RequestAPI {
 
 
+
+    //登录
     @FormUrlEncoded
     @POST("Ischecklogin")
-    Observable<VerifyUserLogin> verify(@Field("userName") String userName, @Field("pwd") String pwd);
-
-
+    Observable<BaseBean<UsersInfoTb>> verify(@Field("userName") String userName, @Field("pwd") String pwd);
 }
