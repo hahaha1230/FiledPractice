@@ -12,8 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitRequestManager {
-   // private static final String BASE_URL = "192.168.1.12:3001/Ischecklogin";
-   private static final String BASE_URL = "http://192.168.1.12:3001";
+   // private static final String BASE_URL = "192.168.1.12:3001/Ischecklogin";"http://192.168.1.9/:3001/Ischecklogin"
+    private static final String BASE_URL = "http://192.168.1.105:3001/";
     private static final int DEFAULT_TIME_OUT = 5;//超时时间 5s
     private static final int DEFAULT_READ_TIME_OUT = 10;
 

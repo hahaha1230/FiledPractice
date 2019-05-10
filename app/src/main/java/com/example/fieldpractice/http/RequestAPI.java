@@ -19,5 +19,5 @@ public interface RequestAPI {
     //登录
     @FormUrlEncoded
     @POST("Ischecklogin")
-    Observable<BaseBean<UsersInfoTb>> verify(@Field("userName") String userName, @Field("pwd") String pwd);
+    Observable<BaseBean<UsersInfoTb>> verify(@Field("username") String userName, @Field("password") String pwd);
 }

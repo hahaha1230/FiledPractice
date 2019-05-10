@@ -65,24 +65,16 @@
             android:layout_marginTop="15dip"
             android:background="@drawable/text_bg"
             android:gravity="center"
-            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
             android:paddingLeft="15dip"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="80dp"
             android:paddingBottom="2dip"
-            android:layout_toLeftOf="@+id/view"
             android:paddingRight="15dip"
             android:paddingTop="2dip"
             android:text="登录"
             android:textColor="#ffffff"
             android:textSize="20sp" />
 
-       <view
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:id="@+id/view"
-           android:layout_below="@+id/input_layout"
-           android:visibility="invisible"
-           android:layout_centerInParent="true"/>
 
 
         <TextView
@@ -91,9 +83,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/input_layout"
             android:layout_marginTop="15dip"
-           android:layout_marginLeft="30dp"
             android:background="@drawable/text_bg"
-            android:layout_toRightOf="@+id/view"
+           android:layout_marginRight="80dp"
+            android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingBottom="2dip"
             android:paddingLeft="15dip"

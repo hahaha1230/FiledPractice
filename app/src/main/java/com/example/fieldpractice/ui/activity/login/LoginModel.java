@@ -19,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -50,7 +51,7 @@ public class LoginModel extends BaseModel<LoginPresenter,ILogin.M> {
         return new ILogin.M() {
             @Override
             public void requestLogin(String name, String pwd) {//throws Exception
-                RequestAPI requestAPI= RetrofitRequestManager.getManager().create(RequestAPI.class);
+                /*RequestAPI requestAPI= RetrofitRequestManager.getManager().create(RequestAPI.class);
                 Observable<BaseBean<UsersInfoTb>>observable=requestAPI.verify(name,pwd);
                 observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -63,39 +64,47 @@ public class LoginModel extends BaseModel<LoginPresenter,ILogin.M> {
                             @Override
                             public void onNext(BaseBean<UsersInfoTb> usersInfoTbBaseBean) {
                                 Log.d("hhh","请求on" +
-                                        " text");
-                                mPresenter.getModelInstance().mApplication.userLogin(usersInfoTbBaseBean.getMessage());
+                                        " text"+usersInfoTbBaseBean.message.getUserId());
+                               // mPresenter.getModelInstance().mApplication.userLogin(usersInfoTbBaseBean.getMessage());
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.d("hhh","请求异常");
+
+                                Log.d("hhh","请求异常"+e.getMessage());
                             }
 
                             @Override
                             public void onComplete() {
-
                                 Log.d("hhh","请求完成");
+
                             }
                         });
-
+*/
                 loginLoader=new LoginLoader();
 
-               /* loginLoader.getResult(name, pwd)
+                loginLoader.getResult(name, pwd)
                             .subscribe(new Consumer<BaseBean<UsersInfoTb>>() {
                                 @Override
                                 public void accept(BaseBean<UsersInfoTb> usersInfoTbBaseBean) throws Exception {
-                                    Log.d("hhh","进入accept方法里面");
+
+
+                                    Log.d("hhh","进入accept方法里面"+usersInfoTbBaseBean.message+
+                                    ";    "+usersInfoTbBaseBean.getMessage()+"   "+usersInfoTbBaseBean.getCode()+"" +
+                                            "" +
+                                            "   "+usersInfoTbBaseBean.getError());
                                     if (usersInfoTbBaseBean.message != null) {
                                         //登陆成功
+                                        Log.d("hhh","登陆成功");
                                         mPresenter.getContract().responseLoginResult(true);
                                     } else {
+                                        Log.d("hhh","登陆失败");
                                         //登陆失败
                                         mPresenter.getContract().responseLoginResult(false);
                                     }
                                 }
-                            });*/
-                loginLoader.getResult(name, pwd)
+                            });
+               /* loginLoader.getResult(name, pwd)
                         .subscribe(new Observer<BaseBean<UsersInfoTb>>() {
                             @Override
                             public void onSubscribe(Disposable d) {
@@ -118,7 +127,7 @@ public class LoginModel extends BaseModel<LoginPresenter,ILogin.M> {
                             }
                         });
 
-                jiandanceshi(name,pwd);
+                jiandanceshi(name,pwd);*/
 
             }
 

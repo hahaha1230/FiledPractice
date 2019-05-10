@@ -7,7 +7,7 @@ package com.example.fieldpractice.javabean;
 public class UsersInfoTb {
     private String userName;
     private String userIcon;
-    private int userId;
+    private String userId;
     private String nickName;
     private String classGrade;
 
@@ -28,11 +28,11 @@ public class UsersInfoTb {
         this.userIcon = userIcon;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

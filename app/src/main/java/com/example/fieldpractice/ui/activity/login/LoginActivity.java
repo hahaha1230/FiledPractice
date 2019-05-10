@@ -7,6 +7,8 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Build;
+import android.renderscript.Script;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -101,12 +103,21 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
     }
 
+    private float inputLayoutWidth;
     private Subscription subscription;
     @Override
     public void onClick(View v) {
         switch (v.getId())
         {
             case R.id.tv_login:
+              /* ViewGroup.MarginLayoutParams params1 = (ViewGroup.MarginLayoutParams)mInputLayout
+                        .getLayoutParams();
+               Log.d("hhh","开始时候为"+params1.leftMargin);
+                params1.leftMargin=210;
+                params1.rightMargin=210;
+                mInputLayout.setLayoutParams(params1);
+
+                inputLayoutWidth=mInputLayout.getWidth();*/
                 if (progress.getVisibility()==View.VISIBLE)
                 {
                     Toast.makeText(this,"正在登陆中...",Toast.LENGTH_SHORT).show();
@@ -118,10 +129,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
                 mWidth = tvLogin.getMeasuredWidth();
                 mHeight = tvLogin.getMeasuredHeight();
                 // 隐藏输入框
-                mName.setVisibility(View.INVISIBLE);
-                mPsw.setVisibility(View.INVISIBLE);
+              //  mName.setVisibility(View.INVISIBLE);
+               // mPsw.setVisibility(View.INVISIBLE);
 
-                inputAnimator(mInputLayout, mWidth, mHeight);
+               inputAnimator(mInputLayout, mWidth, mHeight);
 
 
                 String name=etName.getText().toString();
@@ -130,9 +141,25 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
                 break;
             case R.id.tv_login_cancel:
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)mInputLayout
+                        .getLayoutParams();
+                Log.d("hhh","当前margin"+params.leftMargin+";"+params.rightMargin);
+
+                params.leftMargin=0;
+                params.rightMargin=0;
+                mInputLayout.setLayoutParams(params);
+                Log.d("hhh","当前margin11"+params.leftMargin+";"+params.rightMargin);
+               // inputAnimator1(mInputLayout,inputLayoutWidth,mHeight);
                 if (progress.getVisibility()==View.VISIBLE)
                 {
+                    mName.setVisibility(View.VISIBLE);
+                    mPsw.setVisibility(View.VISIBLE);
+                    mInputLayout.setVisibility(View.VISIBLE);
                     progress.setVisibility(View.GONE);
+                    mWidth = tvLogin.getMeasuredWidth();
+                    mHeight = tvLogin.getMeasuredHeight();
+                    //inputAnimator1(mInputLayout,inputLayoutWidth,mHeight);
+                    Log.d("hhh","取消登录");
                     //取消登录
                     //---------
                 }
@@ -201,11 +228,66 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
                         .getLayoutParams();
                 params.leftMargin = (int) value;
                 params.rightMargin = (int) value;
+                Log.d("hhh","value:"+value);
+                view.setLayoutParams(params);
+                view.invalidate();
+            }
+        });
+        //ObjectAnimator animator2 = ObjectAnimator.ofFloat(mInputLayout,"scaleX", 1f, 0.5f);
+        set.setDuration(1000);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+      //  set.playTogether(animator, animator2);
+        set.start();
+        set.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                /**
+                 * 动画结束后，先显示加载的动画，然后再隐藏输入框
+                 */
+                view.invalidate();
+              //  progress.setVisibility(View.VISIBLE);
+              //  progressAnimator(progress);
+              //  mInputLayout.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+        });
+
+    }
+
+    private void inputAnimator1(final View view, float w, float h) {
+
+        Log.d("hhh","mwidth");
+        AnimatorSet set = new AnimatorSet();
+        ValueAnimator animator = ValueAnimator.ofFloat(mWidth,0);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (Float) animation.getAnimatedValue();
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view
+                        .getLayoutParams();
+                Log.d("hhh","value1:"+value);
+                params.leftMargin = (int) value;
+                params.rightMargin = (int) value;
                 view.setLayoutParams(params);
             }
         });
-        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mInputLayout,
-                "scaleX", 1f, 0.5f);
+       ObjectAnimator animator2 = ObjectAnimator.ofFloat(mInputLayout, "scaleX", 1f, 0.5f);
         set.setDuration(1000);
         set.setInterpolator(new AccelerateDecelerateInterpolator());
         set.playTogether(animator, animator2);
@@ -227,9 +309,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
                 /**
                  * 动画结束后，先显示加载的动画，然后再隐藏输入框
                  */
-                progress.setVisibility(View.VISIBLE);
-                progressAnimator(progress);
-                mInputLayout.setVisibility(View.INVISIBLE);
+
+                //mInputLayout.setVisibility(View.INVISIBLE);
 
             }
 
